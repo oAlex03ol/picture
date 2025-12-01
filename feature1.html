@@ -1,164 +1,134 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>特色對話框氣泡 (白底黃邊)</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+:root {
+    --yellow-border: #ffc107;
+    --text-color: #333;
+    --bg-color: #ffffff;
+}
 
-        :root {
-            --yellow-border: #ffc107;
-            --text-color: #333;
-            --bg-color: #ffffff;
-        }
+/* 外層置中 */
+.wrap-center {
+    display: flex;
+    justify-content: center;
+    padding: 40px 0;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 auto;
+}
 
-        body {
-            font-family: 'Roboto', 'Noto Sans TC', Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
+/* Jiggle 動畫 */
+@keyframes jiggleX {
+    0% { transform: translateX(0); }
+    20% { transform: translateX(-6px); }
+    40% { transform: translateX(6px); }
+    60% { transform: translateX(-4px); }
+    80% { transform: translateX(4px); }
+    100% { transform: translateX(0); }
+}
 
-        /* ================================================ */
-        /* 震動要套在 wrapper，而不是 bubble 本體 */
-        /* ================================================ */
-        .bubble-wrap {
-            display: inline-block;
-        }
+.shake {
+    animation: jiggleX 0.55s ease-in-out;
+}
 
-        @keyframes jiggleX {
-            0% { transform: translateX(0); }
-            20% { transform: translateX(-6px); }
-            40% { transform: translateX(6px); }
-            60% { transform: translateX(-4px); }
-            80% { transform: translateX(4px); }
-            100% { transform: translateX(0); }
-        }
+/* 泡泡本體 */
+.bubble-wrap {
+    display: inline-block;
+}
 
-        .shake {
-            animation: jiggleX 0.55s ease-in-out;
-        }
+.feature-bubble {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border: 4px solid var(--yellow-border);
+    border-radius: 20px;
+    padding: 26px 39px;
 
-        /* ================================================ */
-        /* 你的 bubble — 保持原樣 */
-        /* ================================================ */
-        .feature-bubble {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            border: 4px solid var(--yellow-border);
+    width: 90%;          /* 手機自適應 */
+    max-width: 650px;    /* 桌機最大值 */
+    box-sizing: border-box;
 
-            padding: 26px 39px;
-            border-radius: 20px;
-            max-width: 650px;
-            position: relative;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-            cursor: pointer;
+    position: relative;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    cursor: pointer;
 
-            transition: all 0.4s ease-out;
+    transition: all 0.4s ease-out;
+    opacity: 1;
+    transform: translateY(0);
+}
 
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInBounce 1.2s forwards;
-        }
+.feature-bubble:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+}
 
-        .feature-bubble:hover {
-            transform: translateY(0) scale(1.02);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-        }
+/* 文字大小自適應 */
+.feature-bubble h2 {
+    font-size: clamp(20px, 5vw, 31px);
+    margin-top: 0;
+    margin-bottom: 13px;
+    font-weight: 700;
+}
 
-        .feature-bubble h2 {
-            font-size: 31px;
-            margin-top: 0;
-            margin-bottom: 13px;
-            font-weight: 700;
-        }
+.feature-bubble p {
+    font-size: clamp(16px, 4vw, 26px);
+    line-height: 1.6;
+    margin-bottom: 0;
+    font-weight: 400;
+}
 
-        .feature-bubble p {
-            font-size: 25px;
-            font-family: Lato;
-            line-height: 1.6;
-            margin-bottom: 0;
-            font-weight: 400;
-        }
+/* 箭頭隨螢幕縮放 */
+.feature-bubble::after {
+    content: '';
+    position: absolute;
+    right: -4.5vw;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-top: 4.5vw solid transparent;
+    border-bottom: 4.5vw solid transparent;
+    border-left: 4.5vw solid var(--bg-color);
+}
 
-        .feature-bubble::after {
-            content: '';
-            position: absolute;
-            right: -18px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 0;
-            height: 0;
-            border-top: 22px solid transparent;
-            border-bottom: 22px solid transparent;
-            border-left: 22px solid var(--bg-color);
-        }
+.feature-bubble::before {
+    content: '';
+    position: absolute;
+    right: -5vw;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-top: 5vw solid transparent;
+    border-bottom: 5vw solid transparent;
+    border-left: 5vw solid var(--yellow-border);
+    z-index: -1;
+}
+</style>
 
-        .feature-bubble::before {
-            content: '';
-            position: absolute;
-            right: -24px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 0;
-            height: 0;
-            border-top: 24px solid transparent;
-            border-bottom: 24px solid transparent;
-            border-left: 24px solid var(--yellow-border);
-            z-index: -1;
-        }
-
-        @keyframes fadeInBounce {
-            0% {
-                opacity: 0;
-                transform: translateY(60px);
-            }
-            60% {
-                opacity: 1;
-                transform: translateY(-20px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-    </style>
-</head>
-<body>
-
-    <!-- 🚀 新增 wrapper，用來承載 jiggle -->
+<div class="wrap-center">
     <div class="bubble-wrap" id="wrap">
         <div class="feature-bubble" id="main-bubble">
             <h2>特色一</h2>
             <p>
-                以熟食為主要賣點 : 黃昏市場服務的對象相比早市更為多元，因為多數人早上要外出上班，下班後才有時間去市場採買食材或熟食，為了讓晚下班的人也能吃上熱騰騰的晚餐，許多黃昏市場都開到晚上7點甚至更晚。
+                以熟食為主要賣點 : 黃昏市場服務的對象相比早市更為多元，因為多數人早上要外出上班，下班後才有時間去市場採買食材或熟食。
             </p>
         </div>
     </div>
+</div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const wrap = document.getElementById('wrap');
-            const bubble = document.getElementById('main-bubble');
+<script>
+const wrap = document.getElementById('wrap');
+const bubble = document.getElementById('main-bubble');
 
-            bubble.addEventListener('click', () => {
-                wrap.classList.remove('shake');
-                void wrap.offsetWidth; // force reflow 讓動畫可重複
-                wrap.classList.add('shake');
-            });
+bubble.addEventListener('click', () => {
+    wrap.classList.remove('shake');
+    void wrap.offsetWidth;
+    wrap.classList.add('shake');
+});
 
-            wrap.addEventListener('animationend', e => {
-                if (e.animationName === 'jiggleX') {
-                    wrap.classList.remove('shake');
-                }
-            });
-        });
-    </script>
-
-</body>
-</html>
+wrap.addEventListener('animationend', e => {
+    if (e.animationName === 'jiggleX') {
+        wrap.classList.remove('shake');
+    }
+});
+</script>
