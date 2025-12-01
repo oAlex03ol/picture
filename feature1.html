@@ -80,29 +80,30 @@
 .feature-bubble::after {
     content: '';
     position: absolute;
-    right: -4.5vw;
+    right: -22px; /* 與原本泡泡箭頭寬度一致 */
     top: 50%;
     transform: translateY(-50%);
     width: 0;
     height: 0;
-    border-top: 4.5vw solid transparent;
-    border-bottom: 4.5vw solid transparent;
-    border-left: 4.5vw solid var(--bg-color);
+    border-top: 22px solid transparent;
+    border-bottom: 22px solid transparent;
+    border-left: 22px solid var(--bg-color);
 }
 
 .feature-bubble::before {
     content: '';
     position: absolute;
-    right: -5vw;
+    right: -28px; /* 與原本泡泡箭頭寬度一致 */
     top: 50%;
     transform: translateY(-50%);
     width: 0;
     height: 0;
-    border-top: 5vw solid transparent;
-    border-bottom: 5vw solid transparent;
-    border-left: 5vw solid var(--yellow-border);
+    border-top: 24px solid transparent;
+    border-bottom: 24px solid transparent;
+    border-left: 24px solid var(--yellow-border);
     z-index: -1;
 }
+
 </style>
 
 <div class="wrap-center">
