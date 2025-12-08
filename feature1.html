@@ -1,13 +1,24 @@
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
+<title>Feature Bubble</title>
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
 :root {
     --yellow-border: #ffc107;
     --text-color: #333;
     --bg-color: #ffffff;
 }
 
-/* 外層置中 */
+/* --- Wrapper center --- */
 .wrap-center {
     display: flex;
     justify-content: center;
@@ -18,7 +29,7 @@
     margin: 0 auto;
 }
 
-/* Jiggle 動畫 */
+/* --- Jiggle Animation --- */
 @keyframes jiggleX {
     0% { transform: translateX(0); }
     20% { transform: translateX(-6px); }
@@ -32,11 +43,12 @@
     animation: jiggleX 0.55s ease-in-out;
 }
 
-/* 泡泡本體 */
+/* --- Bubble Container --- */
 .bubble-wrap {
     display: inline-block;
 }
 
+/* --- Bubble Style --- */
 .feature-bubble {
     background-color: var(--bg-color);
     color: var(--text-color);
@@ -44,8 +56,8 @@
     border-radius: 20px;
     padding: 26px 39px;
 
-    width: 90%;          /* 手機自適應 */
-    max-width: 650px;    /* 桌機最大值 */
+    width: 90%;
+    max-width: 650px;
     box-sizing: border-box;
 
     position: relative;
@@ -62,7 +74,7 @@
     box-shadow: 0 8px 20px rgba(0,0,0,0.25);
 }
 
-/* 文字大小自適應 */
+/* --- Text Size --- */
 .feature-bubble h2 {
     font-size: clamp(20px, 5vw, 31px);
     margin-top: 0;
@@ -77,11 +89,11 @@
     font-weight: 400;
 }
 
-/* 箭頭隨螢幕縮放 */
+/* --- Arrow (Desktop) --- */
 .feature-bubble::after {
     content: '';
     position: absolute;
-    right: -21px; /* 與原本泡泡箭頭寬度一致 */
+    right: -21px;
     top: 50%;
     transform: translateY(-50%);
     width: 0;
@@ -94,7 +106,7 @@
 .feature-bubble::before {
     content: '';
     position: absolute;
-    right: -28px; /* 與原本泡泡箭頭寬度一致 */
+    right: -28px;
     top: 50%;
     transform: translateY(-50%);
     width: 0;
@@ -105,32 +117,79 @@
     z-index: -1;
 }
 
+/* --- Mobile View: Arrow moves to bottom --- */
+@media (max-width: 450px) {
+
+    .feature-bubble {
+        padding: 22px 24px;
+    }
+
+    .feature-bubble::after {
+        right: 50%;
+        top: auto;
+        bottom: -20px;
+        transform: translateX(50%);
+        border-left: 22px solid transparent;
+        border-right: 22px solid transparent;
+        border-top: 22px solid var(--bg-color);
+        border-bottom: none;
+    }
+
+    .feature-bubble::before {
+        right: 50%;
+        top: auto;
+        bottom: -26px;
+        transform: translateX(50%);
+        border-left: 24px solid transparent;
+        border-right: 24px solid transparent;
+        border-top: 24px solid var(--yellow-border);
+        border-bottom: none;
+    }
+}
 </style>
+</head>
+
+<body>
 
 <div class="wrap-center">
     <div class="bubble-wrap" id="wrap">
         <div class="feature-bubble" id="main-bubble">
             <h2>特色一</h2>
             <p>
-                以熟食為主要賣點 : 黃昏市場服務的對象相比早市更為多元，因為多數人早上要外出上班，下班後才有時間去市場採買食材或熟食。
+                以熟食為主要賣點：黃昏市場服務的對象相比早市更多元。多數人早上外出上班，
+                下班後才有時間採買食材或熟食，使黃昏市場成為忙碌族群便利的飲食補給站。
             </p>
         </div>
     </div>
 </div>
 
 <script>
+// --- Shake Animation ---
 const wrap = document.getElementById('wrap');
 const bubble = document.getElementById('main-bubble');
 
 bubble.addEventListener('click', () => {
-    wrap.classList.remove('shake');
-    void wrap.offsetWidth;
-    wrap.classList.add('shake');
+    bubble.classList.remove('shake');
+    void bubble.offsetWidth;
+    bubble.classList.add('shake');
 });
 
-wrap.addEventListener('animationend', e => {
+bubble.addEventListener('animationend', e => {
     if (e.animationName === 'jiggleX') {
-        wrap.classList.remove('shake');
+        bubble.classList.remove('shake');
     }
 });
+
+// --- Auto Resize for Google Sites iframe ---
+function sendHeight() {
+    const height = document.documentElement.scrollHeight;
+    parent.postMessage({ iframeHeight: height }, "*");
+}
+
+window.addEventListener("load", sendHeight);
+window.addEventListener("resize", sendHeight);
+setInterval(sendHeight, 300);
 </script>
+
+</body>
+</html>
